@@ -1,0 +1,19 @@
+/**
+ * Aqui contém a configuração de classes
+ */
+
+.destaque, #div_destaques {
+    background-color: purple !important;
+    color: yellow !important;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.destacar_linha {
+    background-color: darkslateblue !important;
+    color: yellow;
+}
+
+.grid-striped .row:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.05);
+}
