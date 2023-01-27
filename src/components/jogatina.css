@@ -1,0 +1,66 @@
+/**
+ * Nesta seção contém todas as configurações CSS de jogatina.jsx
+ */
+
+#div_jogatina {
+    position: absolute;
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    background-color: #000;
+    height: 72px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+#div_jogatina div div {
+    margin: 0px;
+    padding: 0px;
+    /* flex: 0 0 0%; */
+}
+
+#div_dezenas1_10 label, #div_dezenas11_20 label, #div_dezenas21_30 label, #div_dezenas31_40 label, #div_dezenas41_50 label, #div_dezenas51_60 label {
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+    --bs-btn-border-radius: 0px;
+    font-size: x-small;
+    white-space: nowrap;
+}
+
+#tbl_dezenas1_10 tr td, #tbl_dezenas11_20 tr td, #tbl_dezenas21_30 tr td, #tbl_dezenas31_40 tr td, #tbl_dezenas41_50 tr td, #tbl_dezenas51_60 tr td {
+    font-size: x-small;
+}
+
+#linha_col_dezenas1_10, #linha_col_dezenas11_20, #linha_col_dezenas21_30, #linha_col_dezenas31_40, #linha_col_dezenas41_50, #linha_col_dezenas51_60 {
+    background-color: #ffe8be;
+}
+
+#linha_col_qtd_sorteios1_10, #linha_col_qtd_sorteios11_20, #linha_col_qtd_sorteios21_30, #linha_col_qtd_sorteios31_40, #linha_col_qtd_sorteios41_50, #linha_col_qtd_sorteios51_60 {
+    background-color: white;
+}
+
+#linha_col_atrasos1_10, #linha_col_atrasos11_20, #linha_col_atrasos21_30, #linha_col_atrasos31_40, #linha_col_atrasos41_50, #linha_col_atrasos51_60 {
+    background-color: darkblue;
+    color: white;
+}
+
+#linha_col_probabilidades1_10, #linha_col_probabilidades11_20, #linha_col_probabilidades21_30, #linha_col_probabilidades31_40, #linha_col_probabilidades41_50, #linha_col_probabilidades51_60 {
+    background-color: darkcyan;
+    color: white;
+}
+
+#linha_col_repeticoes1_10, #linha_col_repeticoes11_20, #linha_col_repeticoes21_30, #linha_col_repeticoes31_40, #linha_col_repeticoes41_50, #linha_col_repeticoes51_60 {
+    background-color: darksalmon;
+}
+
+.mais_sorteados {
+    background-color: green;
+    color: yellow !important;
+    font-weight: bolder;
+}
+
+.menos_sorteados {
+    background-color: darkred;
+    color: white !important;
+}

@@ -1,0 +1,33 @@
+/**
+ * Nesta seção contém todas as configurações CSS de notificacoes.jsx
+ */
+
+#div_tbl_notificacoes {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 31px;
+    background-color: lightseagreen;
+    color: midnightblue;
+}
+
+/* #col_notificacoes {
+    padding: 0%;
+    background-color: #fff;
+    text-align: justify;
+    height: 64px;
+    width: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    vertical-align: middle;
+    font-size: small;
+} */
+
+#div_destaques {
+    color: yellow !important;
+    font-weight: bolder;
+    font-family: monospace;
+    border: 1px solid yellow;
+    background-color: lightseagreen;
+}
