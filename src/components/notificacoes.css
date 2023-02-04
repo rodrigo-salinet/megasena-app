@@ -2,27 +2,9 @@
  * Nesta seção contém todas as configurações CSS de notificacoes.jsx
  */
 
-#div_tbl_notificacoes {
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    height: 31px;
-    background-color: lightseagreen;
-    color: midnightblue;
+#div_limitar {
+    white-space: nowrap;
 }
-
-/* #col_notificacoes {
-    padding: 0%;
-    background-color: #fff;
-    text-align: justify;
-    height: 64px;
-    width: 100%;
-    overflow: hidden;
-    overflow-y: scroll;
-    vertical-align: middle;
-    font-size: small;
-} */
 
 #div_destaques {
     color: yellow !important;
@@ -30,4 +12,23 @@
     font-family: monospace;
     border: 1px solid yellow;
     background-color: lightseagreen;
+}
+
+#dropdown_menu {
+    padding-left: 1px;
+    display: block
+}
+
+#notificacoes {
+    width: 380px;
+}
+
+#notificacoes .col {
+    padding: 0px;
+    max-width: fit-content;
+    vertical-align: middle;
+}
+
+.col-numero {
+    background-color: #ffe8be;
 }

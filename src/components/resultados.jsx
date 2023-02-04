@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import $ from 'jquery';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,17 +10,24 @@ import {
 import {
     cbx_exibir,
     quantificarDestaques,
-    buscaJogos
+    buscaJogos,
+    verOrdem
 } from './notificacoes';
 import {
     cbxs_dezena,
-    temDezenaSelecionada
+    temDezenaSelecionada,
+    repeticoesDezenas,
+    probabilidadesSorteios,
+    atrasosSorteios,
+    maisMenosSorteados,
+    getCbxSession
 } from './jogatina';
 
 /**
  * Elements from resultados.jsx
  */
 export const div_concursos = React.createRef();
+export var linhas_concursos = React.createRef();
 export const linha_titulos = React.createRef();
 export const concurso = React.createRef();
 export const data_sorteio = React.createRef();
@@ -73,7 +81,6 @@ export const localizarDezenas = (e) => {
         let colunas_tmp;
 
 
-        let linhas_concursos = div_concursos.current.getElementsByClassName('row');
         for (let lin = 0; lin < linhas_concursos.length; lin++) {
             if (linhas_concursos[lin] != null) {
                 colunas_tmp = linhas_concursos[lin].getElementsByClassName("col");
@@ -112,9 +119,7 @@ export const ocultarExibirLinhas = (e) => {
         let achou_destaque = "n";
         let colunas_tmp;
 
-        let linhas_concursos = div_concursos.current.getElementsByClassName('row');
-
-        for (var l = 1; l < linhas_concursos.length; l++) {
+        for (var l = 0; l < linhas_concursos.length; l++) {
             if (linhas_concursos[l] !== null) {
                 linhas_concursos[l].style.display = null;
 
@@ -145,18 +150,21 @@ export const ocultarExibirLinhas = (e) => {
  */
 export const verSorteio = (e) => {
     try {
-        let linhas_concursos = div_concursos.current.getElementsByClassName('row');
+        let concurso_encontrado;
+        // let linha_encontrada;
+        let colunas_tmp;
         for (let i = 0; i < linhas_concursos.length; i++) {
             linhas_concursos[i].classList.remove("destacar_linha");
+            colunas_tmp = linhas_concursos[i].getElementsByClassName("col");
+            if (colunas_tmp[0].innerText === e.target.ariaLabel && colunas_tmp[0].ariaLabel === "concurso") {
+                concurso_encontrado = linhas_concursos[i];
+                // linha_encontrada = i + 1;
+            }
         }
 
-        let indicador = parseInt(e.target.ariaLabel);
-        if (window.sessionStorage.getItem("ordenar") !== "asc") {
-            indicador = linhas_concursos.length - indicador;
-        }
-
-        linhas_concursos[indicador].classList.add("destacar_linha");
-        linhas_concursos[indicador].scrollIntoView({ block : 'center' });
+        concurso_encontrado.classList.add("destacar_linha");
+        // window.scrollTo(0, (($("#div_concursos").outerHeight() / linhas_concursos.length) * linha_encontrada) - 35);
+        concurso_encontrado.scrollIntoView({block: "center"});
 
         return true;
     } catch(e) {
@@ -171,7 +179,6 @@ export const verSorteio = (e) => {
 export const selecionarConcurso = (e) => {
     try {
         let colunas_tmp;
-        let linhas_concursos = div_concursos.current.getElementsByClassName('row');
         for (let lin = 0; lin < linhas_concursos.length; lin++) {
             linhas_concursos[lin].classList.remove("destacar_linha");
             colunas_tmp = linhas_concursos[lin].getElementsByClassName("col");
@@ -235,6 +242,53 @@ export const vSortDesc = (arr) => arr.sort((a, b) => a < b ? 1 : -1);
  * Esta é a classe default Resultados
  */
 export default class Resultados extends Component {
+    /**
+     * Aqui são definidos os eventos/funções globais dos objetos do ambiente, após a renderização (mount) de todos os elementos.
+     */
+    componentDidMount() {
+
+        /**
+         * Aqui são verificadas as dezenas selecionadas carregadas na sessão
+         */
+        getCbxSession();
+
+        /**
+         * Aqui são destacados os números cujas dezenas selecionadas na jogatina
+         */
+        localizarDezenas();
+
+        /**
+         * Aqui é carregada a exibição dos números mais e menos sorteados
+         */
+        maisMenosSorteados();
+
+        /**
+         * Aqui é carregada a exibição dos números mais e menos atrasados
+         */
+        atrasosSorteios();
+
+        /**
+         * Aqui é carregada a exibição das probabilidades dos números
+         */
+        probabilidadesSorteios();
+
+        /**
+         * Aqui é carregada a exibição da média de intervado de repetições dos números
+         */
+        repeticoesDezenas();
+
+        /**
+         * Aqui é verificada qual a ordem de exibição dos números por sorteio carregada na sessão ordem_sorteio
+         */
+        verOrdem();
+
+        /**
+         * Aqui é definida a variável linhas_concursos que recebe a collection de elementos com a tag "row" que estão dentro do elemento div_concursos
+         */
+        linhas_concursos = div_concursos.current.getElementsByClassName('row');
+
+    };
+
     render() {
         let ordem_sorteio = window.sessionStorage.getItem("ordem_sorteio");
 
@@ -257,7 +311,6 @@ export default class Resultados extends Component {
                 results[i].d5,
                 results[i].d6
             ];
-            // console.log(dezenas_tmp.sort((a,b) => a.dezenas_tmp - b.dezenas_tmp));
 
             switch (ordem_sorteio) {
                 case "sorteio":
@@ -372,7 +425,7 @@ export default class Resultados extends Component {
                 rows = rows.reverse();
                 break;
             default:
-                rows = rows;
+                // rows = rows;
                 ordenar = "desc";
                 window.sessionStorage.setItem("ordenar", "desc");
         };
@@ -383,97 +436,94 @@ export default class Resultados extends Component {
                 rows.length = limitar;
                 break;
             default:
-                rows.length = rows.length;
+                // rows.length = rows.length;
                 limitar = 0;
                 window.sessionStorage.setItem("limitar", 0);
         };
 
         return (
             <React.StrictMode>
-                <Container fluid
-                    id={"div_concursos"}
-                    ref={div_concursos}
-                    className={"grid-striped"}
+                <div
+                    className={"resultados"}
                 >
-                    <Row 
+                    <Container
                         id={"linha_titulos"}
                         ref={linha_titulos}
                     >
-                        <Col
-                            id={"concurso"}
-                            ref={concurso}
-                            aria-label={"titulo"}
-                        >
-                            <b
-                                onClick={setAsc}
-                                title={"Clique aqui para ordenar esta coluna em ordem ascendente"}
-                            >
-                                ↓
-                            </b>
-                            <span
-                                title={window.sessionStorage.getItem("ordenar")}
+                        <Row>
+                            <Col
+                                id={"concurso"}
+                                ref={concurso}
+                                aria-label={"titulo"}
                             >
                                 Núm
-                            </span>
-                            <b
-                                onClick={setDesc}
-                                title={"Clique aqui para ordenar esta coluna em ordem descendente"}
+                            </Col>
+                            <Col
+                                id={"data_sorteio"}
+                                ref={data_sorteio}
+                                aria-label={"titulo"}
                             >
-                                ↑
-                            </b>
-                        </Col>
-                        <Col
-                            id={"data_sorteio"}
-                            ref={data_sorteio}
-                            aria-label={"titulo"}
-                        >
-                            Data
-                        </Col>
-                        <Col 
-                            id={"dezena1"}
-                            ref={dezena1}
-                            aria-label={"titulo"}
-                        >
-                            D1
-                        </Col>
-                        <Col 
-                            id={"dezena2"}
-                            ref={dezena2}
-                            aria-label={"titulo"}
-                        >
-                            D2
-                        </Col>
-                        <Col 
-                            id={"dezena3"}
-                            ref={dezena3}
-                            aria-label={"titulo"}
-                        >
-                            D3
-                        </Col>
-                        <Col 
-                            id={"dezena4"}
-                            ref={dezena4}
-                            aria-label={"titulo"}
-                        >
-                            D4
-                        </Col>
-                        <Col 
-                            id={"dezena5"}
-                            ref={dezena5}
-                            aria-label={"titulo"}
-                        >
-                            D5
-                        </Col>
-                        <Col 
-                            id={"dezena6"}
-                            ref={dezena6}
-                            aria-label={"titulo"}
-                        >
-                            D6
-                        </Col>
-                    </Row>
-                    {rows}
-                </Container>
+                                Data
+                            </Col>
+                            <Col 
+                                id={"dezena1"}
+                                ref={dezena1}
+                                aria-label={"titulo"}
+                                className={"dezenas_titulo"}
+                            >
+                                D1
+                            </Col>
+                            <Col 
+                                id={"dezena2"}
+                                ref={dezena2}
+                                aria-label={"titulo"}
+                                className={"dezenas_titulo"}
+                            >
+                                D2
+                            </Col>
+                            <Col 
+                                id={"dezena3"}
+                                ref={dezena3}
+                                aria-label={"titulo"}
+                                className={"dezenas_titulo"}
+                            >
+                                D3
+                            </Col>
+                            <Col 
+                                id={"dezena4"}
+                                ref={dezena4}
+                                aria-label={"titulo"}
+                                className={"dezenas_titulo"}
+                            >
+                                D4
+                            </Col>
+                            <Col 
+                                id={"dezena5"}
+                                ref={dezena5}
+                                aria-label={"titulo"}
+                                className={"dezenas_titulo"}
+                            >
+                                D5
+                            </Col>
+                            <Col 
+                                id={"dezena6"}
+                                ref={dezena6}
+                                aria-label={"titulo"}
+                                className={"dezenas_titulo"}
+                            >
+                                D6
+                            </Col>
+                        </Row>
+                    </Container>
+                    <Container
+                        // fluid
+                        id={"div_concursos"}
+                        ref={div_concursos}
+                        className={"grid-striped"}
+                    >
+                        {rows}
+                    </Container>
+                </div>
             </React.StrictMode>
         );
     }

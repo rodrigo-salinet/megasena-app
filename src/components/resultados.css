@@ -22,22 +22,27 @@
     background: #f1f1f1;
 }
 
-#div_concursos {
+.resultados {
     position: absolute;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 104px;
+    top: 283px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+#div_concursos {
+    height: 410px;
     overflow: hidden;
     overflow-y: scroll;
     background-color: #777d85;
     color: #fff;
     border: 1px solid #000;
+    z-index: 0;
 }
 
 #div_concursos div div {
     text-align: center;
-    /* width: 12.5%; */
 }
 
 #div_concursos div:hover {
@@ -49,17 +54,27 @@
     cursor: pointer;
 }
 
-#linha_titulos, #linha_titulos div {
-    position: sticky;
-    top: 0;
-    z-index: 1;
+#linha_titulos {
     background-color: darkgoldenrod !important;
     color: #000 !important;
+    font-size: small;
     font-weight: bold;
 }
 
+#linha_titulos, #div_concursos {
+    width: 390px;
+}
 .grid-striped .row:nth-of-type(odd) {
     background-color: rgba(0,0,0,.30);
+}
+
+.dezenas_titulo, #concurso {
+    max-width: fit-content;
+}
+
+#concurso {
+    padding-left: 8px;
+    padding-right: 0px;
 }
 
 .destaque {

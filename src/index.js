@@ -12,9 +12,9 @@ const root = ReactDOM.createRoot(div_root);
 
 root.render(
     <React.StrictMode>
-        <Resultados />
         <Jogatina />
         <Notificacoes />
+        <Resultados />
     </React.StrictMode>
 );
 
