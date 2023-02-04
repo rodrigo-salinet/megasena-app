@@ -62,7 +62,7 @@
 }
 
 #linha_titulos, #div_concursos {
-    width: 390px;
+    width: 400px;
 }
 .grid-striped .row:nth-of-type(odd) {
     background-color: rgba(0,0,0,.30);
